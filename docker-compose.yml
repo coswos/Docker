@@ -2,28 +2,29 @@ version: '3'
 
 services:
   web:
-    image: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     ports:
       - "80:80"
     volumes:
       - /etc/nginx/sites-available:/etc/nginx/sites-available
       - ${PWD}:/var/www/html
-
+      - /etc/nginx/sites-available/default:/etc/nginx/sites-enabled/default
+    command: /bin/bash -c "ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/ && nginx -g 'daemon off;'"
 
   php:
-    image: php
+    build:
+      context: .
+      dockerfile: Dockerfile.php
     volumes:
       - ${PWD}:/var/www/html
 
   mysql:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: my_password
-      MYSQL_DATABASE: my_db
-      MYSQL_USER: my_user
-      MYSQL_PASSWORD: my_password
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
     ports:
       - "3306:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
-
