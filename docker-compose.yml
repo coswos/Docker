@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/nginx/sites-available:/etc/nginx/sites-available
+      - ${PWD}:/var/www/html
+
+
+  php:
+    image: php
+    volumes:
+      - ${PWD}:/var/www/html
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: my_password
+      MYSQL_DATABASE: my_db
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
