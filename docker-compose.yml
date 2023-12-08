@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  php-server:
+    build: ./php
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+
+  mysql:
+    image: mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=magic-db
+      - MYSQL_ROOT_PASSWORD=magic-passwd
+
+
